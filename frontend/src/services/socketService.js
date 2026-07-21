@@ -1,6 +1,8 @@
+import { API_BASE } from "./api";
 let socket;
 let reconnectTimer;
 let shouldReconnect = true;
+const WS_BASE = API_BASE.replace(/^http/, "ws");
 const messageListeners = new Set();
 
 function notifyMessageListeners(event) {
@@ -20,7 +22,7 @@ export function connectSocket() {
     return socket;
   }
 
-  socket = new WebSocket("ws://localhost:3000");
+  socket = new WebSocket(WS_BASE);
 
   socket.onopen = () => {
     console.log("Connected");

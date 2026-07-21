@@ -28,10 +28,15 @@ app.get("/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
-await connectDb();
-await connectRedis();
+try {
+  await connectDb();
+  await connectRedis();
 
-startPendingRoomCleaner();
-startPresenceCleaner();
+  startPendingRoomCleaner();
+  startPresenceCleaner();
+} catch (err) {
+  console.error("Failed to initialize services:", err);
+  process.exit(1);
+}
 
 export default app;

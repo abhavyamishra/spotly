@@ -7,9 +7,4 @@ const server = app.listen(config.port, () => {
   console.log(`Spotly backend listening on http://localhost:${config.port}`);
 });
 
-app.use(
-    "/uploads",
-    express.static("uploads")
-);
-
 attachWebsocketServer(server);

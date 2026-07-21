@@ -139,7 +139,7 @@ export default function Dashboard({
       {user.avatar ? (
 
       <img
-          src={`http://localhost:3000/${user.avatar}`}
+          src={user.avatar}
           alt="avatar"
       />
 

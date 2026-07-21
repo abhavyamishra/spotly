@@ -1,15 +1,10 @@
 import multer from "multer";
 
-const storage = multer.diskStorage({
-    destination: "uploads/avatars",
-    filename(req,file,cb){
-        cb(null, Date.now()+"-"+file.originalname);
-    }
-});
+const storage = multer.memoryStorage();
 
 export default multer({
-    storage,
-    limits:{
-        fileSize:2*1024*1024
-    }
+  storage,
+  limits: {
+    fileSize: 2 * 1024 * 1024, // 2 MB
+  },
 });

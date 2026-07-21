@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getRoomMessages } from "../services/roomService";
 import "../chat.css";
+import { API_BASE } from "../services/api";
 
 export default function ChatRoom({ user, setDeletedRoom }) {
   const { roomName } = useParams();
@@ -14,6 +15,8 @@ export default function ChatRoom({ user, setDeletedRoom }) {
 
   const socketRef = useRef(null);
   const bottomRef = useRef(null);
+
+  const WS_BASE = API_BASE.replace(/^http/, "ws");
 
   useEffect(() => {
     async function loadMessages() {
@@ -29,7 +32,7 @@ export default function ChatRoom({ user, setDeletedRoom }) {
   }, [roomName]);
 
   useEffect(() => {
-    const socket = new WebSocket("ws://localhost:3000");
+    const socket = new WebSocket(WS_BASE);
 
     socketRef.current = socket;
 
@@ -172,7 +175,7 @@ export default function ChatRoom({ user, setDeletedRoom }) {
 
                   {msg.avatar ? (
                     <img
-                      src={`http://localhost:3000/${msg.avatar}`}
+                      src={`${API_BASE}/${msg.avatar}`}
                       className="chat-avatar"
                       alt={author}
                     />

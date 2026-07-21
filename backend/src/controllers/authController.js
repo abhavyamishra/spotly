@@ -4,6 +4,8 @@ import { User } from "../models/User.js";
 import { hashPassword, verifyPassword, signToken } from "../services/authService.js";
 import { sendOtp } from "../services/emailService.js";
 import redisClient from "../services/redisService.js";
+import cloudinary from "../services/cloudinaryService.js";
+import streamifier from "streamifier";
 
 
 const OTP_EXPIRY_SECONDS = 300;
@@ -197,14 +199,37 @@ export function currentUser(req, res) {
   return res.json({ user: req.user });
 }
 
-export async function updateAvatar(req,res){
+export async function updateAvatar(req, res) {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        message: "No file uploaded.",
+      });
+    }
+    const result = await new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        {
+          folder: "spotly/avatars",
+        },
+        (error, result) => {
+          if (error) return reject(error);
+          resolve(result);
+        }
+      );
 
-    const user=await User.findById(req.user.userId);
-    user.avatar=req.file.path.replace(/\\/g,"/");
-    await user.save();
-    res.json({
-        avatar:user
+      streamifier.createReadStream(req.file.buffer).pipe(uploadStream);
     });
+    const user = await User.findById(req.user.userId);
+    user.avatar = result.secure_url;
+    await user.save();
+    console.log("upload success");
+    res.json({
+      avatar: user,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json(err);
+  }
 }
 
 export async function requestPasswordResetOtp(req, res) {
