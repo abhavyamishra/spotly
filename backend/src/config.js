@@ -7,7 +7,7 @@ export default {
 
   jwtSecret: process.env.JWT_SECRET || "spotly-dev-secret",
   cookieName: process.env.COOKIE_NAME || "spotly_token",
-  cookieDomain: process.env.COOKIE_DOMAIN || "localhost",
+  cookieDomain: process.env.COOKIE_DOMAIN || undefined,
   cookieSecure: process.env.COOKIE_SECURE === "true",
   accessTokenExpirySeconds: Number(
     process.env.ACCESS_TOKEN_EXPIRE_SECONDS || 86400
@@ -37,5 +37,6 @@ export default {
     "http://127.0.0.1:5173",
     "http://localhost:5500",
     "http://127.0.0.1:5500",
+    process.env.FRONTEND_URL,
   ],
 };

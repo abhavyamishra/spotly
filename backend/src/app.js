@@ -23,6 +23,7 @@ app.use(
 app.use(attachUser);
 app.use("/api/auth", authRoutes);
 app.use("/api/rooms", roomRoutes);
+app.set("trust proxy", 1);
 
 app.get("/health", (req, res) => {
   res.json({ status: "ok" });

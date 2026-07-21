@@ -11,12 +11,20 @@ import streamifier from "streamifier";
 const OTP_EXPIRY_SECONDS = 300;
 
 function makeCookie(res, token) {
-  res.cookie(config.cookieName, token, {
+  const cookieOptions = {
     httpOnly: true,
     secure: config.cookieSecure,
-    sameSite: "lax",
+    sameSite: config.cookieSecure ? "none" : "lax",
     maxAge: config.accessTokenExpirySeconds * 1000,
-  });
+  };
+
+  if (config.cookieDomain) {
+    cookieOptions.domain = config.cookieDomain;
+  }
+
+  res.cookie(config.cookieName, token, cookieOptions);
+
+  console.log("Set-Cookie header:", res.getHeader("Set-Cookie"));
 }
 
 export async function requestOtp(req, res) {
