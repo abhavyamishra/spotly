@@ -50,7 +50,7 @@ export function logout() {
 
 export async function uploadAvatar(formData) {
     const response = await fetch(
-        "${API_BASE}/api/auth/avatar",
+        `${API_BASE}/api/auth/avatar`,
         {
             method: "POST",
             credentials: "include",
