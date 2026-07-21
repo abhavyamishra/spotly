@@ -254,11 +254,10 @@ export default function AuthPanel({
           />
           {!isLogin && emailAvailable === false && (
             <div className="field-status unavailable">
-              Email already registered. Please Login.
+              {emailStatus}
             </div>
           )}
-        </FormRow>
-        
+        </FormRow>        
         <FormRow label="Password">
           <input
             type="password"
@@ -309,12 +308,6 @@ export default function AuthPanel({
             className="link-button forgot-link"
             onClick={() => setForgotPassword(true)}
           >
-            Forgot password?
-          </button>
-        )}
-
-        {isLogin && (
-          <button type="button" className="link-button forgot-link" onClick={() => setForgotPassword(true)}>
             Forgot password?
           </button>
         )}

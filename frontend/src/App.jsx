@@ -116,10 +116,10 @@ function App() {
       return;
     }
 
-    // Basic email format check
-    if (!value.includes("@")) {
-      setEmailStatus("Enter a valid email.");
-      setEmailAvailable(false);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(value)) {
+      setEmailStatus("");
+      setEmailAvailable(null);
       return;
     }
 
