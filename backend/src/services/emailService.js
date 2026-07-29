@@ -31,4 +31,5 @@ export async function sendOtp(email, code) {
 
     throw err;
   }
+
 }
