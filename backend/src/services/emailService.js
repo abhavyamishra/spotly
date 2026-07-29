@@ -1,32 +1,34 @@
-import nodemailer from "nodemailer";
+import sgMail from "@sendgrid/mail";
 import config from "../config.js";
 
-const transport = config.smtpHost
-  ? nodemailer.createTransport({
-      host: config.smtpHost,
-      port: config.smtpPort,
-      secure: config.smtpPort === 465,
-      auth: {
-        user: config.smtpUser,
-        pass: config.smtpPass,
-      },
-    })
-  : null;
+sgMail.setApiKey(config.smtpPass);
 
 export async function sendOtp(email, code) {
+  const msg = {
+    to: email,
+    from: config.smtpFrom,
+    subject: "Your Spotly login code",
+    text: `Use this code to sign in to Spotly: ${code}`,
+  };
 
-  const subject = "Your Spotly login code";
-  const text = `Use this code to sign in to Spotly: ${code}`;
-
-  if (transport) {
+  try {
     console.log(`Sending OTP email to ${email}`);
-    await transport.sendMail({
-      from: config.smtpFrom || config.smtpUser,
-      to: email,
-      subject,
-      text,
-    });
-    return;
-  }
 
+    const response = await sgMail.send(msg);
+
+    console.log("Email sent successfully.");
+    console.log(response[0].statusCode);
+
+    return response;
+  } catch (err) {
+    console.error("Failed to send email");
+
+    if (err.response) {
+      console.error(err.response.body);
+    } else {
+      console.error(err);
+    }
+
+    throw err;
+  }
 }
