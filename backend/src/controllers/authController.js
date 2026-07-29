@@ -28,33 +28,56 @@ function makeCookie(res, token) {
 }
 
 export async function requestOtp(req, res) {
-  const { email } = req.body;
+  try {
+    console.log("========== REQUEST OTP ==========");
+    console.log("Request body:", req.body);
 
-  if (!email) {
-    return res.status(400).json({ error: "Email is required" });
-  }
+    const { email } = req.body;
 
-  const normalizedEmail = String(email).trim().toLowerCase();
+    if (!email) {
+      console.log("No email provided.");
+      return res.status(400).json({ error: "Email is required" });
+    }
 
-  const user = await User.findOne({ email: normalizedEmail });
+    const normalizedEmail = String(email).trim().toLowerCase();
+    console.log("Normalized email:", normalizedEmail);
 
-  if (user) {
-    return res.status(409).json({
-      error: "User already exists. Please login.",
+    console.log("Checking if user exists...");
+    const user = await User.findOne({ email: normalizedEmail });
+
+    if (user) {
+      console.log("User already exists.");
+      return res.status(409).json({
+        error: "User already exists. Please login.",
+      });
+    }
+
+    console.log("Generating OTP...");
+    const code = crypto.randomInt(100000, 999999).toString();
+
+    console.log("Saving OTP to Redis...");
+    await redisClient.set(`otp:${normalizedEmail}`, code, {
+      EX: OTP_EXPIRY_SECONDS,
+    });
+
+    console.log("OTP saved.");
+
+    console.log("Calling sendOtp()...");
+    await sendOtp(normalizedEmail, code);
+
+    console.log("sendOtp() completed successfully.");
+
+    return res.status(200).json({
+      message: "OTP sent",
+    });
+  } catch (err) {
+    console.error("requestOtp failed:");
+    console.error(err);
+
+    return res.status(500).json({
+      error: "Internal server error",
     });
   }
-
-  const code = crypto.randomInt(100000, 999999).toString();
-
-  await redisClient.set(`otp:${normalizedEmail}`, code, {
-    EX: OTP_EXPIRY_SECONDS,
-  });
-
-  await sendOtp(normalizedEmail, code);
-
-  return res.status(200).json({
-    message: "OTP sent",
-  });
 }
 
 export async function signup(req, res) {
