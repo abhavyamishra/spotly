@@ -175,7 +175,7 @@ export default function ChatRoom({ user, setDeletedRoom }) {
 
                   {msg.avatar ? (
                     <img
-                      src={`${API_BASE}/${msg.avatar}`}
+                      src={`${msg.avatar}`}
                       className="chat-avatar"
                       alt={author}
                     />

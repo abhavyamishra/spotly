@@ -101,7 +101,27 @@ margin:auto;
   box-shadow: none;
   border: none;
   color:#111827;;
-  font-weight: 1000;
+  font-weight: 100;
+}
+
+.logo-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.logo-image {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}
+
+.logo-mark span {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #1f2b50;
 }
 
 .hero-tag{

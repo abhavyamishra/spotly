@@ -46,26 +46,26 @@ export default function AuthPanel({
 }) {
   const cooldownText = `${Math.floor(otpCooldown / 60)}:${String(otpCooldown % 60).padStart(2, "0")}`;
 
-    if (forgotPassword) {
+  if (forgotPassword) {
     return (
       <div className="auth-shell">
-
         {/* Keep same left side */}
         <section className="auth-hero">
-          <div className="logo-mark">Spotly</div>
+          <div className="logo-mark">
+            <img src="/spotly-logo.png" alt="Spotly" className="logo-image" />
+            <span>Spotly</span>
+          </div>
 
           <h1>Reset your password</h1>
 
           <p>
-            Enter your email to receive a verification code and
-            securely reset your password.
+            Enter your email to receive a verification code and securely reset
+            your password.
           </p>
         </section>
 
-
         {/* Reset password card */}
         <section className="panel auth-panel">
-
           <h2>Forgot password?</h2>
 
           <p className="reset-description">
@@ -79,11 +79,11 @@ export default function AuthPanel({
               onChange={(e) => onEmailChange(e.target.value)}
               placeholder="you@example.com"
             />
-              {emailStatus && emailAvailable === true && (
-                <div className="field-status unavailable">
-                  No account found with this email.
-                </div>
-              )}
+            {emailStatus && emailAvailable === true && (
+              <div className="field-status unavailable">
+                No account found with this email.
+              </div>
+            )}
           </FormRow>
 
           {!resetOtpSent ? (
@@ -93,17 +93,15 @@ export default function AuthPanel({
               disabled={emailAvailable !== false || otpCooldown > 0}
             >
               {otpCooldown > 0
-               ? `Send OTP again in ${cooldownText}`
-               : "Send OTP"}
+                ? `Send OTP again in ${cooldownText}`
+                : "Send OTP"}
             </button>
           ) : (
             <>
               <FormRow label="OTP">
                 <input
                   value={resetOtp}
-                  onChange={(e) =>
-                    onResetOtpChange(e.target.value)
-                  }
+                  onChange={(e) => onResetOtpChange(e.target.value)}
                   placeholder="123456"
                 />
 
@@ -128,17 +126,12 @@ export default function AuthPanel({
                 <input
                   type="password"
                   value={newPassword}
-                  onChange={(e) =>
-                    onNewPasswordChange(e.target.value)
-                  }
+                  onChange={(e) => onNewPasswordChange(e.target.value)}
                   placeholder="Enter new password"
                 />
               </FormRow>
 
-              <button
-                className="primary wide"
-                onClick={onResetPassword}
-              >
+              <button className="primary wide" onClick={onResetPassword}>
                 Reset password
               </button>
             </>
@@ -147,65 +140,86 @@ export default function AuthPanel({
           <button
             type="button"
             className="link-button forgot-link"
-            onClick={() => setForgotPassword(false) }
+            onClick={() => setForgotPassword(false)}
           >
             Back to login
           </button>
-
         </section>
       </div>
     );
-  }  
+  }
 
   return (
     <div className="auth-shell">
       <section className="auth-hero">
-        <div className="logo-mark">Spotly</div>
+        <div className="logo-mark">
+          <img src="/spotly-logo.png" alt="Spotly" className="logo-image" />
+          <span>Spotly</span>
+        </div>
 
-        <h1>
-            {isLogin ? "Welcome back" : "Create your Spotly account"}
-        </h1>
+        <h1>{isLogin ? "Welcome back" : "Create your Spotly account"}</h1>
 
         <p>
-            Join discussions happening around you, ask questions about nearby places,
-            and stay connected with your local community in real time.
+          Join discussions happening around you, ask questions about nearby
+          places, and stay connected with your local community in real time.
         </p>
 
         <div className="hero-features">
-
-            <div className="hero-feature">
-                <span>📍</span>
-                <div>
-                    <strong>Discover nearby rooms</strong>
-                    <small><br/>See conversations around your current location.</small>
-                </div>
+          <div className="hero-feature">
+            <span>📍</span>
+            <div>
+              <strong>Discover nearby rooms</strong>
+              <small>
+                <br />
+                See conversations around your current location.
+              </small>
             </div>
+          </div>
 
-            <div className="hero-feature">
-                <span>💬</span>
-                <div>
-                    <strong>Ask local questions</strong>
-                    <small><br/>Traffic, events, recommendations and more.</small>
-                </div>
+          <div className="hero-feature">
+            <span>💬</span>
+            <div>
+              <strong>Ask local questions</strong>
+              <small>
+                <br />
+                Traffic, events, recommendations and more.
+              </small>
             </div>
+          </div>
 
-            <div className="hero-feature">
-                <span>⚡</span>
-                <div>
-                    <strong>Real-time discussions</strong>
-                    <small><br/>Messages update instantly as people join.</small>
-                </div>
+          <div className="hero-feature">
+            <span>⚡</span>
+            <div>
+              <strong>Real-time discussions</strong>
+              <small>
+                <br />
+                Messages update instantly as people join.
+              </small>
             </div>
-
+          </div>
         </div>
       </section>
 
       <section className="panel auth-panel">
         <div className="auth-tabs">
-          <button type="button" className={isLogin ? "tab active" : "tab"} onClick={() => {setIsLogin(true); setOtpCooldown(0);}}>
+          <button
+            type="button"
+            className={isLogin ? "tab active" : "tab"}
+            onClick={() => {
+              setIsLogin(true);
+              setOtpCooldown(0);
+            }}
+          >
             Login
           </button>
-          <button type="button" className={!isLogin ? "tab active" : "tab"} onClick={() => {setIsLogin(false); setOtpCooldown(0);}}>
+          <button
+            type="button"
+            className={!isLogin ? "tab active" : "tab"}
+            onClick={() => {
+              setIsLogin(false);
+              setOtpCooldown(0);
+            }}
+          >
             Sign up
           </button>
         </div>
@@ -225,14 +239,13 @@ export default function AuthPanel({
                     usernameAvailable === true
                       ? "field-status available"
                       : usernameAvailable === false
-                      ? "field-status unavailable"
-                      : "field-status"
+                        ? "field-status unavailable"
+                        : "field-status"
                   }
                 >
                   {usernameStatus}
                 </div>
               )}
-
             </FormRow>
 
             <FormRow label="Display name">
@@ -253,11 +266,9 @@ export default function AuthPanel({
             placeholder="you@example.com"
           />
           {!isLogin && emailAvailable === false && (
-            <div className="field-status unavailable">
-              {emailStatus}
-            </div>
+            <div className="field-status unavailable">{emailStatus}</div>
           )}
-        </FormRow>        
+        </FormRow>
         <FormRow label="Password">
           <input
             type="password"
@@ -275,31 +286,57 @@ export default function AuthPanel({
               placeholder="123456"
             />
             {otpCooldown > 0 && (
-              <div className="helper-text">You can request another OTP in {cooldownText}.</div>
+              <div className="helper-text">
+                You can request another OTP in {cooldownText}.
+              </div>
             )}
           </FormRow>
         )}
 
         {isLogin ? (
-          <button className="primary wide" onClick={onLogin} disabled={isLoginLoading || !email.trim() || !password.trim()}>
+          <button
+            className="primary wide"
+            onClick={onLogin}
+            disabled={isLoginLoading || !email.trim() || !password.trim()}
+          >
             {isLoginLoading && <span className="spinner" />}
             {isLoginLoading ? "Logging in" : "Login"}
           </button>
         ) : !otpSent ? (
-          <button className="primary wide" onClick={onRequestOtp} disabled={isOtpLoading || otpCooldown > 0 || username.length < 3 || usernameAvailable !== true || emailAvailable !== true} >
+          <button
+            className="primary wide"
+            onClick={onRequestOtp}
+            disabled={
+              isOtpLoading ||
+              otpCooldown > 0 ||
+              username.length < 3 ||
+              usernameAvailable !== true ||
+              emailAvailable !== true
+            }
+          >
             {isOtpLoading && <span className="spinner" />}
-            {otpCooldown > 0 ? `Send OTP again in ${cooldownText}` : isOtpLoading ? "Sending OTP" : "Send OTP"}
+            {otpCooldown > 0
+              ? `Send OTP again in ${cooldownText}`
+              : isOtpLoading
+                ? "Sending OTP"
+                : "Send OTP"}
           </button>
         ) : (
-          <button className="primary wide" onClick={onSignup} disabled={isSignupLoading || username.length < 3 || usernameAvailable === false}>
+          <button
+            className="primary wide"
+            onClick={onSignup}
+            disabled={
+              isSignupLoading ||
+              username.length < 3 ||
+              usernameAvailable === false
+            }
+          >
             {isSignupLoading && <span className="spinner" />}
             {isSignupLoading ? "Creating account" : "Create account"}
           </button>
         )}
         {isLogin && status && (
-          <div className="field-status unavailable login-error">
-            {status}
-          </div>
+          <div className="field-status unavailable login-error">{status}</div>
         )}
 
         {isLogin && (
